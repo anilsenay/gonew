@@ -63,6 +63,10 @@ func main() {
 	log.SetPrefix("gonew: ")
 	log.SetFlags(0)
 	flag.Usage = usage
+
+	srcModuleName := flag.String("srcmod", "", "source module name in go.mod file")
+	dstModuleName := flag.String("dstmod", "", "destination module name in go.mod file")
+
 	flag.Parse()
 	args := flag.Args()
 
@@ -121,6 +125,14 @@ func main() {
 		if err := os.MkdirAll(dir, 0777); err != nil {
 			log.Fatal(err)
 		}
+	}
+
+	// Set custom module name
+	if *srcModuleName != "" {
+		srcMod = *srcModuleName
+	}
+	if *dstModuleName != "" {
+		dstMod = *dstModuleName
 	}
 
 	// Copy from module cache into new directory, making edits as needed.
